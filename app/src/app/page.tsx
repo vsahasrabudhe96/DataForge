@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -66,6 +67,8 @@ const stats = [
 ];
 
 export default function HomePage() {
+  const { data: session } = useSession();
+  
   return (
     <div className="min-h-screen bg-[var(--background)] overflow-hidden">
       {/* Background effects */}
@@ -96,16 +99,39 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/dashboard">
-              <Button variant="secondary" size="sm">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button variant="primary" size="sm">
-                Start Free
-              </Button>
-            </Link>
+            {session?.user ? (
+              <>
+                <Link href="/dashboard">
+                  <Button variant="secondary" size="sm" className="gap-2">
+                    {session.user.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        className="w-5 h-5 rounded-full"
+                      />
+                    ) : (
+                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-[10px] font-bold text-white">
+                        {session.user.name?.[0] || 'U'}
+                      </div>
+                    )}
+                    Dashboard
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/auth/signin">
+                  <Button variant="secondary" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button variant="primary" size="sm">
+                    Start Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

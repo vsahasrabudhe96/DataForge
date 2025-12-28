@@ -1,14 +1,31 @@
 'use client';
 
-import { Bell, Search, User, Zap, Flame, Menu } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { Bell, Search, User, Zap, Flame, Menu, LogOut, Settings, ChevronDown } from 'lucide-react';
 import { useStore, useUserProgress, useSidebarOpen } from '@/store/useStore';
 import { Button } from '@/components/ui/Button';
 import { clsx } from 'clsx';
 
 export function Header() {
+  const { data: session, status } = useSession();
   const userProgress = useUserProgress();
   const sidebarOpen = useSidebarOpen();
   const { toggleSidebar } = useStore();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <header
@@ -78,14 +95,83 @@ export function Header() {
         </button>
 
         {/* User Menu */}
-        <Button variant="ghost" size="sm" className="gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
-            <User className="w-4 h-4 text-white" />
+        {status === 'loading' ? (
+          <div className="w-8 h-8 rounded-lg bg-[var(--background-tertiary)] animate-pulse" />
+        ) : session?.user ? (
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className={clsx(
+                'flex items-center gap-2 px-2 py-1.5 rounded-xl',
+                'hover:bg-[var(--background-tertiary)] transition-colors',
+                showUserMenu && 'bg-[var(--background-tertiary)]'
+              )}
+            >
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || 'User'}
+                  className="w-8 h-8 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
+                  <span className="text-sm font-bold text-white">
+                    {session.user.name?.[0]?.toUpperCase() || 'U'}
+                  </span>
+                </div>
+              )}
+              <span className="hidden lg:inline text-sm font-medium text-[var(--foreground)]">
+                {session.user.name?.split(' ')[0] || 'User'}
+              </span>
+              <ChevronDown className={clsx(
+                'w-4 h-4 text-[var(--foreground-muted)] transition-transform hidden lg:block',
+                showUserMenu && 'rotate-180'
+              )} />
+            </button>
+
+            {/* Dropdown Menu */}
+            {showUserMenu && (
+              <div className="absolute right-0 top-full mt-2 w-56 py-2 rounded-xl bg-[var(--background-secondary)] border border-[var(--card-border)] shadow-xl shadow-black/20 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="px-4 py-3 border-b border-[var(--card-border)]">
+                  <p className="text-sm font-medium text-[var(--foreground)]">
+                    {session.user.name}
+                  </p>
+                  <p className="text-xs text-[var(--foreground-muted)] truncate">
+                    {session.user.email}
+                  </p>
+                </div>
+                
+                <div className="py-1">
+                  <Link
+                    href="/settings"
+                    onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors"
+                  >
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
+                </div>
+                
+                <div className="border-t border-[var(--card-border)] pt-1">
+                  <button
+                    onClick={() => signOut({ callbackUrl: '/' })}
+                    className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-          <span className="hidden lg:inline text-sm font-medium">Guest</span>
-        </Button>
+        ) : (
+          <Link href="/auth/signin">
+            <Button variant="primary" size="sm">
+              Sign In
+            </Button>
+          </Link>
+        )}
       </div>
     </header>
   );
 }
-
