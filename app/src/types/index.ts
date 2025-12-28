@@ -76,6 +76,18 @@ export type TopicCategory =
   | 'data-quality' 
   | 'performance';
 
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced';
+
+export interface SkillTrack {
+  id: SkillLevel;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  topics: TopicCategory[];
+  estimatedHours: number;
+}
+
 export interface Question {
   id: string;
   topic: TopicCategory;

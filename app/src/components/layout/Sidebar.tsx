@@ -32,12 +32,9 @@ const navItems = [
     href: '/learn',
     icon: BookOpen,
     children: [
-      { label: 'Data Modeling', href: '/learn/data-modeling' },
-      { label: 'SCD Types', href: '/learn/scd' },
-      { label: 'Loading Patterns', href: '/learn/loading-patterns' },
-      { label: 'Data Lakehouse', href: '/learn/lakehouse' },
-      { label: 'Data Quality', href: '/learn/data-quality' },
-      { label: 'Performance', href: '/learn/performance' },
+      { label: 'Beginner Track', href: '/learn/beginner' },
+      { label: 'Intermediate Track', href: '/learn/intermediate' },
+      { label: 'Advanced Track', href: '/learn/advanced' },
     ],
   },
   {
@@ -45,9 +42,7 @@ const navItems = [
     href: '/practice',
     icon: Target,
     children: [
-      { label: 'Challenges', href: '/practice/challenges' },
       { label: 'Quiz', href: '/practice/quiz' },
-      { label: 'Flashcards', href: '/practice/flashcards' },
     ],
   },
   {
@@ -59,21 +54,6 @@ const navItems = [
     label: 'Progress',
     href: '/progress',
     icon: Trophy,
-    children: [
-      { label: 'Stats', href: '/progress/stats' },
-      { label: 'Achievements', href: '/progress/achievements' },
-      { label: 'Leaderboard', href: '/progress/leaderboard' },
-    ],
-  },
-  {
-    label: 'Resources',
-    href: '/resources',
-    icon: FileText,
-    children: [
-      { label: 'Cheat Sheets', href: '/resources/cheat-sheets' },
-      { label: 'SQL Library', href: '/resources/sql-library' },
-      { label: 'Interview Tips', href: '/resources/interview-tips' },
-    ],
   },
 ];
 

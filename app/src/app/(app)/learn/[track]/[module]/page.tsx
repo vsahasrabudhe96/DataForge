@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Badge, DifficultyBadge } from '@/components/ui/Badge';
-import { getTopicById, getModuleById } from '@/data/learning-modules';
+import { getModuleById, getSkillTrackById } from '@/data/learning-modules';
 import { useStore, useUserProgress } from '@/store/useStore';
 import {
   ArrowLeft,
@@ -20,22 +20,21 @@ import {
   Zap,
   Code,
   FileText,
-  PlayCircle,
   Trophy,
 } from 'lucide-react';
 import { clsx } from 'clsx';
-import type { TopicCategory } from '@/types';
+import type { SkillLevel } from '@/types';
 
 export default function ModulePage({ 
   params 
 }: { 
-  params: Promise<{ topic: string; module: string }> 
+  params: Promise<{ track: string; module: string }> 
 }) {
   const resolvedParams = use(params);
-  const topicId = resolvedParams.topic as TopicCategory;
+  const trackId = resolvedParams.track as SkillLevel;
   const moduleId = resolvedParams.module;
   
-  const topic = getTopicById(topicId);
+  const track = getSkillTrackById(trackId);
   const module = getModuleById(moduleId);
   const router = useRouter();
   const { completeModule, addXp } = useStore();
@@ -44,14 +43,13 @@ export default function ModulePage({
   const [currentSection, setCurrentSection] = useState(0);
   const [sectionsCompleted, setSectionsCompleted] = useState<Set<number>>(new Set());
 
-  if (!topic || !module) {
+  if (!track || !module) {
     notFound();
   }
 
   const isModuleCompleted = userProgress.completedModules.includes(module.id);
   const section = module.sections[currentSection];
   const isLastSection = currentSection === module.sections.length - 1;
-  const allSectionsCompleted = sectionsCompleted.size === module.sections.length;
 
   const handleNextSection = () => {
     setSectionsCompleted(prev => new Set([...prev, currentSection]));
@@ -71,11 +69,6 @@ export default function ModulePage({
     if (currentSection > 0) {
       setCurrentSection(prev => prev - 1);
     }
-  };
-
-  const getNextModule = () => {
-    const moduleIndex = topic.modules.findIndex(m => m.id === module.id);
-    return topic.modules[moduleIndex + 1];
   };
 
   // Render content based on type
@@ -126,11 +119,11 @@ export default function ModulePage({
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <Link 
-          href={`/learn/${topic.id}`}
+          href={`/learn/${trackId}`}
           className="inline-flex items-center gap-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to {topic.title}</span>
+          <span>Back to {track.title}</span>
         </Link>
         
         <div className="flex items-center gap-2">
@@ -146,7 +139,7 @@ export default function ModulePage({
       <Card variant="highlight" padding="lg">
         <div className="flex items-start gap-4">
           <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-2xl flex-shrink-0">
-            {topic.icon}
+            {track.icon}
           </div>
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">
@@ -275,13 +268,11 @@ export default function ModulePage({
             }
           </p>
           
-          {getNextModule() && (
-            <Link href={`/learn/${topic.id}/${getNextModule()!.id}`}>
-              <Button variant="primary" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Continue to Next Module
-              </Button>
-            </Link>
-          )}
+          <Link href={`/learn/${trackId}`}>
+            <Button variant="primary" rightIcon={<ArrowRight className="w-4 h-4" />}>
+              Back to {track.title}
+            </Button>
+          </Link>
         </Card>
       )}
     </div>
