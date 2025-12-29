@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
@@ -439,7 +439,7 @@ export default function ModulePage({
 function renderMarkdown(content: string) {
   // Process the content into structured elements
   const lines = content.split('\n');
-  const elements: JSX.Element[] = [];
+  const elements: React.ReactElement[] = [];
   let currentList: string[] = [];
   let currentNumberedList: string[] = [];
   let currentTable: string[][] = [];
