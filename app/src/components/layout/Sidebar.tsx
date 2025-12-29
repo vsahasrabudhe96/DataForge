@@ -8,13 +8,13 @@ import {
   BookOpen,
   Target,
   Trophy,
-  FileText,
   Code,
   Settings,
   ChevronLeft,
   ChevronRight,
   Flame,
   Zap,
+  Layers,
 } from 'lucide-react';
 import { useStore, useUserProgress } from '@/store/useStore';
 import { XPProgressBar } from '@/components/ui/ProgressBar';
@@ -36,6 +36,11 @@ const navItems = [
       { label: 'Intermediate Track', href: '/learn/intermediate' },
       { label: 'Advanced Track', href: '/learn/advanced' },
     ],
+  },
+  {
+    label: 'Flashcards',
+    href: '/flashcards',
+    icon: Layers,
   },
   {
     label: 'Practice',
