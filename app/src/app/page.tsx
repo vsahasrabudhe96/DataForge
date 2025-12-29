@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -67,8 +66,6 @@ const stats = [
 ];
 
 export default function HomePage() {
-  const { data: session } = useSession();
-  
   return (
     <div className="min-h-screen bg-[var(--background)] overflow-hidden">
       {/* Background effects */}
@@ -81,9 +78,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-xl font-bold text-white">
-              DF
+              DB
             </div>
-            <span className="text-xl font-bold gradient-text">DataForge</span>
+            <span className="text-xl font-bold gradient-text">DataBay</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -93,45 +90,17 @@ export default function HomePage() {
             <Link href="/practice" className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
               Practice
             </Link>
-            <Link href="/resources" className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
-              Resources
+            <Link href="/flashcards" className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+              Flashcards
             </Link>
           </div>
 
           <div className="flex items-center gap-3">
-            {session?.user ? (
-              <>
-                <Link href="/dashboard">
-                  <Button variant="secondary" size="sm" className="gap-2">
-                    {session.user.image ? (
-                      <img
-                        src={session.user.image}
-                        alt={session.user.name || 'User'}
-                        className="w-5 h-5 rounded-full"
-                      />
-                    ) : (
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-[10px] font-bold text-white">
-                        {session.user.name?.[0] || 'U'}
-                      </div>
-                    )}
-                    Dashboard
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/signin">
-                  <Button variant="secondary" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/auth/signup">
-                  <Button variant="primary" size="sm">
-                    Start Free
-                  </Button>
-                </Link>
-              </>
-            )}
+            <Link href="/dashboard">
+              <Button variant="primary" size="sm">
+                Get Started
+              </Button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -351,10 +320,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-sm font-bold text-white">
-              DF
+              DB
             </div>
             <span className="text-sm text-[var(--foreground-muted)]">
-              © 2024 DataForge. All rights reserved.
+              © 2024 DataBay. All rights reserved.
             </span>
           </div>
           <div className="flex items-center gap-6 text-sm text-[var(--foreground-muted)]">

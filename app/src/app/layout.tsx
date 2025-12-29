@@ -16,12 +16,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DataForge | Master Data Engineering Interviews",
+  title: "DataBay | Master Data Engineering Interviews",
   description: "Gamified interview preparation for data engineers. Learn real-world concepts through interactive challenges, quizzes, and hands-on practice.",
   keywords: ["data engineering", "interview prep", "SQL", "data modeling", "ETL", "data warehouse"],
-  authors: [{ name: "DataForge" }],
+  authors: [{ name: "DataBay" }],
   openGraph: {
-    title: "DataForge | Master Data Engineering Interviews",
+    title: "DataBay | Master Data Engineering Interviews",
     description: "Gamified interview preparation for data engineers",
     type: "website",
   },

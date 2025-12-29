@@ -84,12 +84,12 @@ export function Sidebar() {
       <div className="p-4 border-b border-[var(--card-border)]">
         <Link href="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center text-xl font-bold text-white">
-            DF
+            DB
           </div>
           {sidebarOpen && (
             <div className="overflow-hidden">
               <h1 className="text-lg font-bold gradient-text whitespace-nowrap">
-                DataForge
+                DataBay
               </h1>
               <p className="text-[10px] text-[var(--foreground-muted)] uppercase tracking-wider">
                 Interview Prep

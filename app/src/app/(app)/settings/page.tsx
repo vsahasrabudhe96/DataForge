@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -17,14 +15,12 @@ import {
   RefreshCw,
   Bell,
   Shield,
-  LogOut,
   AlertTriangle,
   Check,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function SettingsPage() {
-  const { data: session } = useSession();
   const { resetProgress, toggleTheme } = useStore();
   const userProgress = useUserProgress();
   const theme = useTheme();
@@ -62,7 +58,7 @@ export default function SettingsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `dataforge-progress-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `databay-progress-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -113,53 +109,17 @@ export default function SettingsPage() {
         
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 rounded-lg bg-[var(--background-tertiary)]">
-            {session?.user ? (
-              <>
-                <div className="flex items-center gap-4">
-                  {session.user.image ? (
-                    <img
-                      src={session.user.image}
-                      alt={session.user.name || 'User'}
-                      className="w-12 h-12 rounded-xl object-cover"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
-                      <span className="text-lg font-bold text-white">
-                        {session.user.name?.[0]?.toUpperCase() || 'U'}
-                      </span>
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-medium text-[var(--foreground)]">{session.user.name}</p>
-                    <p className="text-sm text-[var(--foreground-muted)]">
-                      {session.user.email}
-                    </p>
-                  </div>
-                </div>
-                <Button 
-                  variant="secondary" 
-                  size="sm"
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <div>
-                  <p className="font-medium text-[var(--foreground)]">Guest User</p>
-                  <p className="text-sm text-[var(--foreground-muted)]">
-                    Sign in to save progress across devices
-                  </p>
-                </div>
-                <Link href="/auth/signin">
-                  <Button variant="primary" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-              </>
-            )}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-purple)] flex items-center justify-center">
+                <User className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="font-medium text-[var(--foreground)]">Data Engineer</p>
+                <p className="text-sm text-[var(--foreground-muted)]">
+                  Progress saved locally on this device
+                </p>
+              </div>
+            </div>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
@@ -389,4 +349,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
